@@ -65,6 +65,12 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
 
+# Directory navigation behavior from previous OMZ setup.
+setopt auto_cd
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt pushdminus
+
 # Preserve legacy aliases from previous non-git-managed setup.
 if (( $+commands[eza] )); then
   alias ls='eza --icons'
