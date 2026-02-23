@@ -6,7 +6,7 @@ parse_mode "$@"
 
 if [[ "$MODE" == "install" ]]; then
   stow_module vscode
-  log "Applied VS Code user config module"
+  log "Applied VS Code user config module (extensions/settings are expected from VS Code Settings Sync)"
 else
   unstow_module vscode
   log "Unstowed VS Code user config module"

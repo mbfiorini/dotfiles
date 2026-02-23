@@ -10,8 +10,11 @@ Goal:
 ## Repo structure
 
 - `git/`, `gh/`, `zsh/`, `tmux/`, `lazygit/`, `vscode/`: stow modules with user config.
+- `scripts/manifests/gh-extensions.txt`: declarative `gh` extension list used by `scripts/gh.sh`.
+- `scripts/manifests/vscode-extensions.txt`: merged backup list of VS Code extensions (reference only).
 - `scripts/<software>.sh`: install script for each software/tooling area.
 - `scripts/bootstrap.sh`: executes all scripts in the correct order.
+- `docs/credentials-setup.md`: SSH/auth/signing/bootstrap credentials runbook for new machines.
 - `docs/non-default-inventory.md`: captured inventory from this source machine.
 - `docs/apt-manual-full.txt`: full `apt-mark showmanual` snapshot from this source machine.
 
@@ -29,13 +32,21 @@ git clone <YOUR_GITHUB_REPO_URL> ~/dotfiles
 cd ~/dotfiles
 ```
 
+For credentials (SSH keys, `gh` auth, optional signing), follow:
+
+```bash
+less docs/credentials-setup.md
+```
+
+`./scripts/bootstrap.sh` also runs an interactive Git credentials preflight before `git.sh`.
+
 ## Execution order (install)
 
 Run scripts in this exact order:
 
 1. `./scripts/base-utils.sh`
-2. `./scripts/fonts.sh`
-3. `./scripts/git.sh`
+2. `./scripts/git.sh`
+3. `./scripts/fonts.sh`
 4. `./scripts/gh.sh`
 5. `./scripts/zsh.sh`
 6. `./scripts/tmux.sh`
@@ -84,10 +95,15 @@ The following scripts stow/unstow user config automatically:
 
 - Sensitive files are intentionally not tracked (`.ssh`, `.gnupg`, auth tokens).
 - `gh` authentication is not automated. Run `gh auth login` manually.
-- `zsh.sh` installs Oh My Zsh + plugins/themes pinned to the commits captured from this machine.
+- `bootstrap.sh` enforces Git credential preflight first (SSH dir/agent + required keypairs) before `git.sh`.
+- GitHub key registration in preflight guidance is browser-based (`https://github.com/settings/keys`), so it works before `gh` is installed/configured.
+- `git.sh` requires both keypairs (`~/.ssh/id_ed25519*` and `~/.ssh/github_signing_key*` by default), asks for `GitHub username`/`GitHub e-mail`, then stores identity in `~/.config/git/local-user.conf`.
+- `gh.sh` installs extensions listed in `scripts/manifests/gh-extensions.txt` (currently `dlvhdr/gh-dash`) and removes them on `-U`.
+- `zsh.sh` installs `zinit` and `zsh/.config/zsh/.zshrc` declares plugins/themes through the manager (no plugin git clones in installer scripts).
 - `dotnet.sh` installs SDK 8.0 + global tools (`dotnet-ef`, `dotnet-format`) pinned to the versions detected.
 - `node.sh` installs nvm pinned to the detected commit and Node `22.22.0`.
 - `vscode` module currently tracks `~/.config/Code/User/mcp.json` only.
+- `vscode.sh` is intentionally minimal and does not install extensions; use VS Code Settings Sync (Microsoft/GitHub sign-in) as the source of truth for editor settings and extensions.
 
 ## GitHub workflow
 

@@ -47,6 +47,7 @@ Host: Ubuntu on WSL2 (`systemd=true`)
 
 ## Zsh ecosystem detected
 - Oh My Zsh: `ohmyzsh/ohmyzsh` @ `88659ed`
+- zsh plugins loaded: `git`, `zsh-autosuggestions`, `zsh-syntax-highlighting`
 - zsh-autosuggestions: `zsh-users/zsh-autosuggestions` @ `85919cd`
 - zsh-syntax-highlighting: `zsh-users/zsh-syntax-highlighting` @ `5eb677b`
 - powerlevel10k: `romkatv/powerlevel10k` @ `efc9ddd`
@@ -59,6 +60,9 @@ Host: Ubuntu on WSL2 (`systemd=true`)
 - catppuccin-tmux @ `b4e0715`
 - tmux-yank @ `acfd36e`
 
+## gh extensions detected
+- gh-dash: `dlvhdr/gh-dash` `v4.22.0`
+
 ## Global tools detected
 - dotnet tools:
   - dotnet-ef `10.0.2`
@@ -68,3 +72,8 @@ Host: Ubuntu on WSL2 (`systemd=true`)
   - corepack `0.34.0`
 - pipx packages:
   - tldr `3.4.4`
+
+## Bundling status in `~/dotfiles/scripts`
+- bundled: zsh plugins/themes, tmux plugins, gh extensions, dotnet global tools, npm globals, pipx packages
+- zsh install strategy in this repo: manager-first via `zinit` declarations inside `zsh/.config/zsh/.zshrc`
+- VS Code strategy: use VS Code Settings Sync account data for extensions/preferences; keep only a backup extension list in `scripts/manifests/vscode-extensions.txt`

@@ -16,6 +16,7 @@ PACKAGES=(
   gnupg
   jq
   lsb-release
+  openssh-client
   ripgrep
   software-properties-common
   stow

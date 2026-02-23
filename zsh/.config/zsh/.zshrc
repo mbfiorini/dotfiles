@@ -11,85 +11,38 @@ export PATH="$HOME/.dotnet/tools:$HOME/.local/bin:$PATH"
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
-# Path to your Oh My Zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+# Zinit plugin manager
+ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+if [[ ! -f "$ZINIT_HOME/zinit.zsh" ]]; then
+  mkdir -p "${ZINIT_HOME:h}"
+  if (( $+commands[git] )); then
+    git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME" >/dev/null 2>&1
+  fi
+fi
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time Oh My Zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+if [[ -f "$ZINIT_HOME/zinit.zsh" ]]; then
+  source "$ZINIT_HOME/zinit.zsh"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+  # Plugin manager handles fetch/update from these declarations.
+  zinit snippet OMZP::git
+  zinit light zsh-users/zsh-autosuggestions
+  zinit light zsh-users/zsh-syntax-highlighting
+  zinit light zsh-users/zsh-completions
+  zinit light romkatv/powerlevel10k
+  zinit ice nocompile
+  zinit light catppuccin/zsh-syntax-highlighting
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+  # Ignore broken Docker completion symlink when Docker Desktop is off.
+  if [[ -L /usr/share/zsh/vendor-completions/_docker ]] && [[ ! -e /usr/share/zsh/vendor-completions/_docker ]]; then
+    fpath=(${fpath:#/usr/share/zsh/vendor-completions})
+  fi
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+  autoload -Uz compinit
+  compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"
 
-# Uncomment one of the following lines to change the auto-update behavior
-# zstyle ':omz:update' mode disabled  # disable automatic updates
-# zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
-
-# Uncomment the following line to change how often to auto-update (in days).
-# zstyle ':omz:update' frequency 13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# You can also set it to another string to have that shown instead of the default red dots.
-# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"
-# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
-plugins=(
-  git
-  zsh-autosuggestions
-  zsh-syntax-highlighting
-)
-
-source ~/.config/catppuccin/zsh-syntax-highlighting/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh
-
-source $ZSH/oh-my-zsh.sh
+  CATPPUCCIN_THEME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/plugins/catppuccin---zsh-syntax-highlighting/themes/catppuccin_mocha-zsh-syntax-highlighting.zsh"
+  [[ -f "$CATPPUCCIN_THEME" ]] && source "$CATPPUCCIN_THEME"
+fi
 
 
 # User configuration
@@ -111,6 +64,19 @@ fi
 autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^X^E' edit-command-line
+
+# Preserve legacy aliases from previous non-git-managed setup.
+if (( $+commands[eza] )); then
+  alias ls='eza --icons'
+  alias ll='eza -lah --icons'
+  alias la='eza -a --icons'
+else
+  alias ls='ls --color=auto'
+  alias ll='ls -alF --color=auto'
+  alias la='ls -A --color=auto'
+fi
+(( $+commands[bat] )) && alias cat='bat'
+(( $+commands[fd] )) && alias find='fd'
 
 # Preferred editor for local and remote sessions
 # if [[ -n $SSH_CONNECTION ]]; then
@@ -208,8 +174,7 @@ autoload -Uz zmv
 # zmv -n '(*).log' '$1.txt'        # Dry run (preview changes)
 # zmv -i '(*).log' '$1.txt'        # Interactive mode (confirm each)
 
-# Load Angular CLI autocompletion.
-#source <(ng completion script)
-
 # Machine-local overrides (not tracked by git)
-[[ -f "${ZDOTDIR:-$HOME/.config/zsh}/local.zsh" ]] && source "${ZDOTDIR:-$HOME/.config/zsh}/local.zsh"
+if [[ -f "${ZDOTDIR:-$HOME/.config/zsh}/local.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME/.config/zsh}/local.zsh"
+fi
