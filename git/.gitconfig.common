@@ -1,0 +1,11 @@
+# ~/.gitconfig.common  (PORTAVEL)
+
+[user]
+    name = mbfiorini
+    email = matheus.fiorini@geniality.com.br
+
+[push]
+    autoSetupRemote = true
+
+[url "git@github.com:"]
+    insteadOf = https://github.com/

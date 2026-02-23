@@ -1,0 +1,38 @@
+[include]
+    path = ~/.gitconfig.common
+
+[core]
+    autocrlf = input
+	editor = code --wait
+
+# credencial: use SSH como padrão (você já está fazendo),
+# então nem precisa de helper de HTTPS se migrar tudo pra SSH.
+
+[gpg]
+    format = ssh
+
+# (Opcional) se você quiser commit assinado também no WSL:
+[gpg "ssh"]
+    program = /usr/bin/ssh-keygen
+    allowedSignersFile = ~/.ssh/allowed_signers
+#
+[user]
+    signingkey = ~/.ssh/github_signing_key.pub
+#
+[commit]
+    gpgsign = true
+    
+    
+[diff]
+	tool = vscode
+[difftool "vscode"]
+	cmd = code --wait --diff \"$LOCAL\" \"$REMOTE\"
+[merge]
+	tool = vscode
+[mergetool "vscode"]
+	cmd = code --wait \"$MERGED\"
+[mergetool]
+	keepBackup = false
+	prompt = false
+[difftool]
+	prompt = false
