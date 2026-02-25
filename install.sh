@@ -46,7 +46,10 @@ if [[ "$MODE" == "install" ]]; then
   ensure_git
   clone_repo_if_missing
 
-  "$DOTFILES_DIR/scripts/git-credentials.sh"
+  # Source credentials preflight so ssh-agent env persists for bootstrap.
+  # shellcheck source=/dev/null
+  source "$DOTFILES_DIR/scripts/git-credentials.sh"
+  ensure_git_credentials_prereqs
   BOOTSTRAP_CONTINUE_ON_ERROR=1 SKIP_GIT_CREDENTIALS_PREFLIGHT=1 "$DOTFILES_DIR/scripts/bootstrap.sh"
 else
   if [[ ! -d "$DOTFILES_DIR/.git" ]]; then

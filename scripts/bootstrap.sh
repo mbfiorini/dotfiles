@@ -35,7 +35,10 @@ if [[ "$MODE" == "install" ]]; then
   "$SCRIPT_DIR/base-utils.sh"
 
   if [[ "${SKIP_GIT_CREDENTIALS_PREFLIGHT:-0}" != "1" ]]; then
-    "$SCRIPT_DIR/git-credentials.sh"
+    # Source credentials preflight so ssh-agent env persists in this process.
+    # shellcheck source=/dev/null
+    source "$SCRIPT_DIR/git-credentials.sh"
+    ensure_git_credentials_prereqs
   fi
 
   failed=()

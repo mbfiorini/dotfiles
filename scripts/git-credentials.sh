@@ -182,4 +182,6 @@ ensure_git_credentials_prereqs() {
   guide_github_key_registration
 }
 
-ensure_git_credentials_prereqs
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+  ensure_git_credentials_prereqs
+fi
