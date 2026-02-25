@@ -11,6 +11,12 @@ install_extensions() {
     return 0
   fi
 
+  if ! gh auth status >/dev/null 2>&1; then
+    log "gh is not authenticated yet; skipping extension install. Run 'gh auth login' and then './scripts/gh.sh'."
+    return 0
+  fi
+
+  local had_failures=0
   local ext
   while IFS= read -r ext; do
     [[ -z "$ext" ]] && continue
@@ -20,8 +26,15 @@ install_extensions() {
       continue
     fi
 
-    gh extension install "$ext"
+    if ! gh extension install "$ext"; then
+      echo "[gh.sh] Warning: failed to install extension '$ext' (continuing)." >&2
+      had_failures=1
+    fi
   done < "$EXTENSIONS_FILE"
+
+  if [[ "$had_failures" -ne 0 ]]; then
+    log "Some gh extensions failed to install. Continue bootstrap, then rerun './scripts/gh.sh' after auth/network is fixed."
+  fi
 }
 
 remove_extensions() {

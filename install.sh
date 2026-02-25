@@ -47,7 +47,7 @@ if [[ "$MODE" == "install" ]]; then
   clone_repo_if_missing
 
   "$DOTFILES_DIR/scripts/git-credentials.sh"
-  SKIP_GIT_CREDENTIALS_PREFLIGHT=1 "$DOTFILES_DIR/scripts/bootstrap.sh"
+  BOOTSTRAP_CONTINUE_ON_ERROR=1 SKIP_GIT_CREDENTIALS_PREFLIGHT=1 "$DOTFILES_DIR/scripts/bootstrap.sh"
 else
   if [[ ! -d "$DOTFILES_DIR/.git" ]]; then
     echo "Cannot uninstall: $DOTFILES_DIR is not a git clone." >&2

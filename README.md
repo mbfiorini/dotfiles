@@ -40,6 +40,8 @@ This command will:
 3. run `scripts/git-credentials.sh` (interactive key setup/import)
 4. run `scripts/bootstrap.sh`
 
+`install.sh` enables continue-on-error mode in bootstrap so one failing component does not stop later installers.
+
 ## Clone
 
 ```bash
@@ -118,6 +120,7 @@ The following scripts stow/unstow user config automatically:
 - GitHub key registration in preflight guidance is browser-based (`https://github.com/settings/keys`), so it works before `gh` is installed/configured.
 - `git.sh` requires both keypairs (`~/.ssh/id_ed25519*` and `~/.ssh/github_signing_key*` by default), asks for `GitHub username`/`GitHub e-mail`, then stores identity in `~/.config/git/local-user.conf`.
 - `gh.sh` installs extensions listed in `scripts/manifests/gh-extensions.txt` (currently `dlvhdr/gh-dash`) and removes them on `-U`.
+- `gh.sh` skips extension installation when `gh` is not authenticated yet, so bootstrap can continue; rerun `./scripts/gh.sh` after `gh auth login`.
 - `zsh.sh` installs `zinit` and `zsh/.config/zsh/.zshrc` declares plugins/themes through the manager (no plugin git clones in installer scripts).
 - `dotnet.sh` installs SDK 8.0 + global tools (`dotnet-ef`, `dotnet-format`) pinned to the versions detected.
 - `node.sh` installs nvm pinned to the detected commit and Node `22.22.0`.
