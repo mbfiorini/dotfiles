@@ -161,13 +161,16 @@ setopt hist_find_no_dups
 # 5. Suffix Aliases - Open Files by Extension
 # -------------------------------------------
 # Just type the filename to open it with the associated program
-alias -s json=fx
-alias -s md=bat
-alias -s txt=bat
-alias -s log=bat
+alias -s json='$EDITOR'
+alias -s md='$EDITOR'
+alias -s txt='$EDITOR'
+alias -s log='$EDITOR'
 alias -s p='$EDITOR'
 alias -s i='$EDITOR'
-alias -s cls='$EDITOR'
+alias -s cs='$EDITOR'
+alias -s html='$EDITOR'
+alias -s js='$EDITOR'
+alias -s ts='$EDITOR'
 
 # -------------------------------------------
 # 7. zmv - Advanced Batch Rename/Move

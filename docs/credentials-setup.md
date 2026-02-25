@@ -7,6 +7,7 @@ This bootstrap is portable, but authentication is machine/user-specific.
 `./scripts/bootstrap.sh` runs `./scripts/git-credentials.sh` before `git.sh`:
 - ensures `~/.ssh` exists with secure permissions
 - ensures `ssh-agent` is running
+- persists agent env to `~/.ssh/ssh-agent.env` for shell reuse
 - requires both keypairs:
   - auth: `~/.ssh/id_ed25519` + `~/.ssh/id_ed25519.pub`
   - signing: `~/.ssh/github_signing_key` + `~/.ssh/github_signing_key.pub`
@@ -20,6 +21,10 @@ You can run this step manually first:
 ```bash
 ./scripts/git-credentials.sh
 ```
+
+In this repo, `zsh/.zshenv` loads `~/.ssh/ssh-agent.env` (if present), so the
+first interactive `zsh` after bootstrap can reuse the agent without extra
+logic in `.zshrc`.
 
 ## 2) Manual key setup (if preferred)
 

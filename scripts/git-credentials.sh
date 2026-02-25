@@ -3,6 +3,7 @@ set -euo pipefail
 
 AUTH_KEY="${GIT_AUTH_KEY:-$HOME/.ssh/id_ed25519}"
 SIGNING_KEY="${GIT_SIGNING_KEY:-$HOME/.ssh/github_signing_key}"
+SSH_AGENT_ENV_FILE="${GIT_SSH_AGENT_ENV_FILE:-$HOME/.ssh/ssh-agent.env}"
 
 expand_home_path() {
   local value="$1"
@@ -47,12 +48,39 @@ ensure_ssh_dir() {
   chmod 700 "$HOME/.ssh"
 }
 
+ssh_agent_is_reachable() {
+  ssh-add -l >/dev/null 2>&1
+  local rc=$?
+  [[ $rc -eq 0 || $rc -eq 1 ]]
+}
+
+load_ssh_agent_env() {
+  if [[ -f "$SSH_AGENT_ENV_FILE" ]]; then
+    # shellcheck source=/dev/null
+    source "$SSH_AGENT_ENV_FILE" >/dev/null 2>&1 || true
+  fi
+}
+
+persist_ssh_agent_env() {
+  mkdir -p "$(dirname "$SSH_AGENT_ENV_FILE")"
+  {
+    printf 'export SSH_AUTH_SOCK=%q\n' "${SSH_AUTH_SOCK:-}"
+    printf 'export SSH_AGENT_PID=%q\n' "${SSH_AGENT_PID:-}"
+  } > "$SSH_AGENT_ENV_FILE"
+  chmod 600 "$SSH_AGENT_ENV_FILE"
+}
+
 ensure_ssh_agent() {
-  local rc
-  rc=0
-  ssh-add -l >/dev/null 2>&1 || rc=$?
-  if [[ $rc -eq 2 ]] || [[ -z "${SSH_AUTH_SOCK:-}" ]]; then
+  if ! ssh_agent_is_reachable; then
+    load_ssh_agent_env
+  fi
+
+  if ! ssh_agent_is_reachable; then
     eval "$(ssh-agent -s)" >/dev/null
+  fi
+
+  if ssh_agent_is_reachable; then
+    persist_ssh_agent_env
   fi
 }
 
@@ -132,6 +160,7 @@ ensure_git_credentials_prereqs() {
   ensure_ssh_dir
   AUTH_KEY="$(expand_home_path "$AUTH_KEY")"
   SIGNING_KEY="$(expand_home_path "$SIGNING_KEY")"
+  SSH_AGENT_ENV_FILE="$(expand_home_path "$SSH_AGENT_ENV_FILE")"
   mkdir -p "$(dirname "$AUTH_KEY")" "$(dirname "$SIGNING_KEY")"
 
   if have_required_keys; then

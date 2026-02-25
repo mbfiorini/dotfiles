@@ -39,6 +39,7 @@ This command will:
 2. clone `~/dotfiles` via HTTPS if missing
 3. run `scripts/git-credentials.sh` (interactive key setup/import)
 4. run `scripts/bootstrap.sh`
+5. run sanity checks, ensure `~/projects`, then hand off to `zsh`
 
 `install.sh` enables continue-on-error mode in bootstrap so one failing component does not stop later installers.
 
@@ -117,6 +118,7 @@ The following scripts stow/unstow user config automatically:
 - Sensitive files are intentionally not tracked (`.ssh`, `.gnupg`, auth tokens).
 - `gh` authentication is not automated. Run `gh auth login` manually.
 - `bootstrap.sh` enforces Git credential preflight first (SSH dir/agent + required keypairs) before `git.sh`.
+- At successful end, `bootstrap.sh` runs sanity checks, ensures `~/projects`, and starts `zsh` when interactive.
 - GitHub key registration in preflight guidance is browser-based (`https://github.com/settings/keys`), so it works before `gh` is installed/configured.
 - `git.sh` requires both keypairs (`~/.ssh/id_ed25519*` and `~/.ssh/github_signing_key*` by default), asks for `GitHub username`/`GitHub e-mail`, then stores identity in `~/.config/git/local-user.conf`.
 - `gh.sh` installs extensions listed in `scripts/manifests/gh-extensions.txt` (currently `dlvhdr/gh-dash`) and removes them on `-U`.
@@ -126,6 +128,20 @@ The following scripts stow/unstow user config automatically:
 - `node.sh` installs nvm pinned to the detected commit and Node `22.22.0`.
 - `vscode` module currently tracks `~/.config/Code/User/mcp.json` only.
 - `vscode.sh` is intentionally minimal and does not install extensions; use VS Code Settings Sync (Microsoft/GitHub sign-in) as the source of truth for editor settings and extensions.
+
+## Projects workspace
+
+`gh-dash` in this repo is configured for local clones under `~/projects/<repo-name>`.
+Use `gh repo clone` to create local repos; `gh-dash` then maps PRs/issues to
+those local paths via `repoPaths`.
+
+Examples:
+
+```bash
+mkdir -p ~/projects
+gh repo clone geniality-br/geniality-datasul ~/projects/geniality-datasul
+gh repo clone mbfiorini/dotfiles ~/projects/dotfiles
+```
 
 ## GitHub workflow
 
