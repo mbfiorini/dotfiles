@@ -32,9 +32,10 @@ if [[ -f "$ZINIT_HOME/zinit.zsh" ]]; then
   zinit ice nocompile
   zinit light catppuccin/zsh-syntax-highlighting
 
-  # Ignore broken Docker completion symlink when Docker Desktop is off.
+  # Warn when Docker completion symlink is broken (common when Docker Desktop
+  # on Windows host is stopped), but do not mutate system files/fpath.
   if [[ -L /usr/share/zsh/vendor-completions/_docker ]] && [[ ! -e /usr/share/zsh/vendor-completions/_docker ]]; then
-    fpath=(${fpath:#/usr/share/zsh/vendor-completions})
+    echo "[zsh] Warning: Docker vendor completions may be unavailable while Docker Desktop is stopped on the Windows host." >&2
   fi
 
   autoload -Uz compinit
