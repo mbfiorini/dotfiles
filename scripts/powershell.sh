@@ -28,8 +28,16 @@ setup_microsoft_repo() {
   rm -rf "$tmp_dir"
 }
 
+refresh_apt_lists_for_powershell_repo() {
+  # base-utils may have already run apt update; force refresh so the new
+  # Microsoft repository is visible in this same bootstrap run.
+  rm -f /tmp/dotfiles-apt-updated.flag
+  apt_update
+}
+
 if [[ "$MODE" == "install" ]]; then
   setup_microsoft_repo
+  refresh_apt_lists_for_powershell_repo
   apt_install powershell
   log "Installed powershell"
 else
