@@ -4,7 +4,7 @@ This bootstrap is portable, but authentication is machine/user-specific.
 
 ## 1) What bootstrap enforces
 
-`./scripts/bootstrap.sh` runs a Git credentials preflight before `git.sh`:
+`./scripts/bootstrap.sh` runs `./scripts/git-credentials.sh` before `git.sh`:
 - ensures `~/.ssh` exists with secure permissions
 - ensures `ssh-agent` is running
 - requires both keypairs:
@@ -14,6 +14,12 @@ This bootstrap is portable, but authentication is machine/user-specific.
 If keys are missing, it guides you with:
 1. generate new keys and then add them to GitHub
 2. import existing keys from a directory you provide
+
+You can run this step manually first:
+
+```bash
+./scripts/git-credentials.sh
+```
 
 ## 2) Manual key setup (if preferred)
 

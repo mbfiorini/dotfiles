@@ -12,8 +12,10 @@ Goal:
 - `git/`, `gh/`, `zsh/`, `tmux/`, `lazygit/`, `vscode/`: stow modules with user config.
 - `scripts/manifests/gh-extensions.txt`: declarative `gh` extension list used by `scripts/gh.sh`.
 - `scripts/manifests/vscode-extensions.txt`: merged backup list of VS Code extensions (reference only).
+- `scripts/git-credentials.sh`: standalone Git SSH auth/signing preflight.
 - `scripts/<software>.sh`: install script for each software/tooling area.
 - `scripts/bootstrap.sh`: executes all scripts in the correct order.
+- `install.sh`: first-run entrypoint (clone if missing, credentials preflight, then bootstrap).
 - `docs/credentials-setup.md`: SSH/auth/signing/bootstrap credentials runbook for new machines.
 - `docs/non-default-inventory.md`: captured inventory from this source machine.
 - `docs/apt-manual-full.txt`: full `apt-mark showmanual` snapshot from this source machine.
@@ -23,7 +25,20 @@ Goal:
 1. Ubuntu (same major version or newer recommended)
 2. sudo access
 3. internet access
-4. git (if missing: `sudo apt-get update && sudo apt-get install -y git`)
+
+## Quickstart (fresh machine)
+
+If this repository is public, you can bootstrap from HTTPS without preconfigured GitHub SSH auth:
+
+```bash
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/mbfiorini/dotfiles/main/install.sh)"
+```
+
+This command will:
+1. install `git` if missing
+2. clone `~/dotfiles` via HTTPS if missing
+3. run `scripts/git-credentials.sh` (interactive key setup/import)
+4. run `scripts/bootstrap.sh`
 
 ## Clone
 
@@ -38,7 +53,11 @@ For credentials (SSH keys, `gh` auth, optional signing), follow:
 less docs/credentials-setup.md
 ```
 
-`./scripts/bootstrap.sh` also runs an interactive Git credentials preflight before `git.sh`.
+`./scripts/bootstrap.sh` also runs `./scripts/git-credentials.sh` (unless `SKIP_GIT_CREDENTIALS_PREFLIGHT=1`).
+
+Note about clone protocol:
+- `https://github.com/...` clone of a public repo does not require GitHub auth.
+- `git@github.com:...` clone requires working SSH auth key on the machine.
 
 ## Execution order (install)
 
