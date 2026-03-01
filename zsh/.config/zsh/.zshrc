@@ -161,19 +161,32 @@ setopt hist_find_no_dups
 # 5. Suffix Aliases - Open Files by Extension
 # -------------------------------------------
 # Just type the filename to open it with the associated program
-alias -s json='$EDITOR'
-alias -s md='$EDITOR'
-alias -s txt='$EDITOR'
-alias -s log='$EDITOR'
-alias -s p='$EDITOR'
-alias -s i='$EDITOR'
-alias -s cs='$EDITOR'
-alias -s html='$EDITOR'
-alias -s js='$EDITOR'
-alias -s ts='$EDITOR'
+open-with-editor() {
+  local target="$1"
+
+  # Keep --wait after the target path for VS Code to avoid suffix-alias
+  # invocation issues with space-containing command strings.
+  if (( $+commands[code] )); then
+    code "$target" --wait
+    return
+  fi
+
+  "${=EDITOR}" "$target"
+}
+
+alias -s json='open-with-editor'
+alias -s md='open-with-editor'
+alias -s txt='open-with-editor'
+alias -s log='open-with-editor'
+alias -s p='open-with-editor'
+alias -s i='open-with-editor'
+alias -s cs='open-with-editor'
+alias -s html='open-with-editor'
+alias -s js='open-with-editor'
+alias -s ts='open-with-editor'
 
 # -------------------------------------------
-# 7. zmv - Advanced Batch Rename/Move
+# 6. zmv - Advanced Batch Rename/Move
 # -------------------------------------------
 # Enable zmv
 autoload -Uz zmv
