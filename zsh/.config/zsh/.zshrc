@@ -58,7 +58,7 @@ fi
 # -------------------------------------------
 # Use VS Code for command-line editing (Ctrl+X then Ctrl+E)
 if (( $+commands[code] )); then
-  export VISUAL="code --wait"
+  export VISUAL="code --reuse-window --wait"
   export EDITOR="$VISUAL"
 fi
 
