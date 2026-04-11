@@ -58,8 +58,8 @@ fi
 # -------------------------------------------
 # Use VS Code for command-line editing (Ctrl+X then Ctrl+E)
 if (( $+commands[code] )); then
-  export VISUAL="code --wait"
-  export EDITOR="$VISUAL"
+  export VISUAL="code --wait --"
+  export EDITOR="code"
 fi
 
 autoload -Uz edit-command-line
