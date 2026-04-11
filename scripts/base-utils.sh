@@ -7,6 +7,7 @@ parse_mode "$@"
 PACKAGES=(
   apt-transport-https
   bat
+  bubblewrap
   build-essential
   ca-certificates
   curl
