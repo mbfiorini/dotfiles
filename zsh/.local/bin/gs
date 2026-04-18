@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+
+set -euo pipefail
+
+session_name="gs"
+repo_dir="${GS_REPO_DIR:-$HOME/projects/geniality-datasul}"
+
+if [[ ! -d "$repo_dir" ]]; then
+  echo "[gs] Repo not found: $repo_dir" >&2
+  exit 1
+fi
+
+if ! command -v tmux >/dev/null 2>&1; then
+  echo "[gs] tmux is not installed" >&2
+  exit 1
+fi
+
+if ! tmux has-session -t "$session_name" 2>/dev/null; then
+  tmux new-session -d -s "$session_name" -c "$repo_dir" -n shell
+  tmux new-window -t "$session_name" -c "$repo_dir" -n git
+
+  tmux send-keys -t "${session_name}:git" "lazygit" C-m
+
+  if command -v code >/dev/null 2>&1; then
+    tmux send-keys -t "${session_name}:shell" "code ." C-m
+  fi
+fi
+
+exec tmux attach-session -t "$session_name"

@@ -172,6 +172,9 @@ alias -s html='$EDITOR'
 alias -s js='$EDITOR'
 alias -s ts='$EDITOR'
 
+# Manual tmux workflow entrypoint.
+alias gs="$HOME/.local/bin/gs"
+
 # -------------------------------------------
 # 7. zmv - Advanced Batch Rename/Move
 # -------------------------------------------
