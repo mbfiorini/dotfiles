@@ -124,7 +124,7 @@ The following scripts stow/unstow user config automatically:
 - `gh.sh` installs extensions listed in `scripts/manifests/gh-extensions.txt` (currently `dlvhdr/gh-dash`) and removes them on `-U`.
 - `gh.sh` skips extension installation when `gh` is not authenticated yet, so bootstrap can continue; rerun `./scripts/gh.sh` after `gh auth login`.
 - `zsh.sh` installs `zinit` and `zsh/.config/zsh/.zshrc` declares plugins/themes through the manager (no plugin git clones in installer scripts).
-- `dotnet.sh` installs SDK 8.0 + global tools (`dotnet-ef`, `dotnet-format`) pinned to the versions detected.
+- `dotnet.sh` installs SDKs 8.0 and 10.0 + global tools (`dotnet-ef`, `dotnet-format`) pinned to the versions detected.
 - `node.sh` installs nvm pinned to the detected commit and Node `22.22.0`.
 - `vscode` module currently tracks `~/.config/Code/User/mcp.json` only.
 - `vscode.sh` is intentionally minimal and does not install extensions; use VS Code Settings Sync (Microsoft/GitHub sign-in) as the source of truth for editor settings and extensions.

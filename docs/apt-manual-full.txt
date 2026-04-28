@@ -3,6 +3,7 @@ base-files
 bash
 bat
 bsdutils
+bubblewrap
 build-essential
 ca-certificates
 coreutils
@@ -10,6 +11,7 @@ curl
 dash
 debianutils
 diffutils
+dotnet-sdk-10.0
 dotnet-sdk-8.0
 eza
 fd-find
@@ -69,6 +71,7 @@ python3-pip
 python3-venv
 ripgrep
 software-properties-common
+stow
 tmux
 ubuntu-minimal
 ubuntu-wsl

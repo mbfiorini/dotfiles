@@ -30,16 +30,16 @@ setup_microsoft_repo() {
 
 if [[ "$MODE" == "install" ]]; then
   setup_microsoft_repo
-  apt_install dotnet-sdk-8.0
+  apt_install dotnet-sdk-8.0 dotnet-sdk-10.0
 
   dotnet tool update --global dotnet-ef --version 10.0.2
   dotnet tool update --global dotnet-format --version 5.1.250801
 
-  log "Installed dotnet SDK and global dotnet tools"
+  log "Installed dotnet SDKs and global dotnet tools"
 else
   dotnet tool uninstall --global dotnet-ef >/dev/null 2>&1 || true
   dotnet tool uninstall --global dotnet-format >/dev/null 2>&1 || true
 
-  apt_remove dotnet-sdk-8.0
-  log "Removed dotnet SDK and global dotnet tools"
+  apt_remove dotnet-sdk-8.0 dotnet-sdk-10.0
+  log "Removed dotnet SDKs and global dotnet tools"
 fi

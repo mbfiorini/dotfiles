@@ -37,6 +37,7 @@ log() {
 
 run_sanity_checks() {
   local missing=()
+  local required_dotnet_sdks=("8.0" "10.0")
   local cmd
   for cmd in git gh zsh tmux python3 dotnet stow pwsh; do
     if ! command -v "$cmd" >/dev/null 2>&1; then
@@ -56,6 +57,18 @@ run_sanity_checks() {
 
   if command -v gh >/dev/null 2>&1 && ! gh extension list 2>/dev/null | awk '{print $2}' | grep -Fxq "dlvhdr/gh-dash"; then
     echo "[bootstrap.sh] Warning: gh extension 'dlvhdr/gh-dash' is not installed yet (authenticate gh then rerun scripts/gh.sh)." >&2
+  fi
+
+  if command -v dotnet >/dev/null 2>&1; then
+    local installed_sdks
+    local version
+    installed_sdks="$(dotnet --list-sdks 2>/dev/null || true)"
+    for version in "${required_dotnet_sdks[@]}"; do
+      if ! grep -Eq "^${version//./\\.}" <<<"$installed_sdks"; then
+        echo "[bootstrap.sh] Sanity checks failed; missing .NET SDK ${version}.x." >&2
+        return 1
+      fi
+    done
   fi
 
   log "Sanity checks passed"
