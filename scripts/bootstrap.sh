@@ -24,6 +24,7 @@ ORDER=(
   zsh.sh
   tmux.sh
   node.sh
+  claude.sh
   diff-so-fancy.sh
   python.sh
   dotnet.sh
@@ -40,7 +41,7 @@ run_sanity_checks() {
   local missing=()
   local required_dotnet_sdks=("8.0" "10.0")
   local cmd
-  for cmd in git gh zsh tmux python3 dotnet stow pwsh; do
+  for cmd in git gh zsh tmux python3 dotnet stow pwsh claude; do
     if ! command -v "$cmd" >/dev/null 2>&1; then
       missing+=("$cmd")
     fi

@@ -9,7 +9,8 @@ Goal:
 
 ## Repo structure
 
-- `git/`, `gh/`, `zsh/`, `tmux/`, `lazygit/`, `vscode/`: stow modules with user config.
+- `git/`, `gh/`, `zsh/`, `tmux/`, `lazygit/`, `vscode/`, `claude/`: stow modules with user config.
+- `codex/`: Codex global rules (`~/.codex/rules/default.rules`), linked manually (not part of bootstrap).
 - `scripts/manifests/gh-extensions.txt`: declarative `gh` extension list used by `scripts/gh.sh`.
 - `scripts/manifests/vscode-extensions.txt`: merged backup list of VS Code extensions (reference only).
 - `scripts/git-credentials.sh`: standalone Git SSH auth/signing preflight.
@@ -73,12 +74,13 @@ Run scripts in this exact order:
 5. `./scripts/zsh.sh`
 6. `./scripts/tmux.sh`
 7. `./scripts/node.sh`
-8. `./scripts/diff-so-fancy.sh`
-9. `./scripts/python.sh`
-10. `./scripts/dotnet.sh`
-11. `./scripts/lazygit.sh`
-12. `./scripts/powershell.sh`
-13. `./scripts/vscode.sh`
+8. `./scripts/claude.sh`
+9. `./scripts/diff-so-fancy.sh`
+10. `./scripts/python.sh`
+11. `./scripts/dotnet.sh`
+12. `./scripts/lazygit.sh`
+13. `./scripts/powershell.sh`
+14. `./scripts/vscode.sh`
 
 Or run all in order:
 
@@ -113,6 +115,7 @@ The following scripts stow/unstow user config automatically:
 - `tmux.sh` -> module `tmux`
 - `lazygit.sh` -> module `lazygit`
 - `vscode.sh` -> module `vscode`
+- `claude.sh` -> module `claude`
 
 ## Notes
 
@@ -128,6 +131,7 @@ The following scripts stow/unstow user config automatically:
 - `dotnet.sh` installs SDKs 8.0 and 10.0 + global tools (`dotnet-ef`, `dotnet-format`) pinned to the versions detected.
 - `node.sh` installs nvm pinned to the detected commit and Node `22.22.0`.
 - `diff-so-fancy.sh` installs diff-so-fancy `1.4.14` with the user-local npm prefix; Git and Lazygit use it as their diff renderer.
+- `claude.sh` installs Claude Code through the native installer (initial version pinned, auto-updates afterwards), installs `bubblewrap`/`socat` for the optional `/sandbox`, moves pre-existing `~/.claude/{settings.json,CLAUDE.md}` aside as `*.stow-bak-<ts>`, then stows `claude/` (user-level `settings.json` and `CLAUDE.md`). Log in with `claude` after bootstrap; `-U` removes the binary but keeps `~/.claude` data.
 - `vscode` module currently tracks `~/.config/Code/User/mcp.json` only.
 - `vscode.sh` is intentionally minimal and does not install extensions; use VS Code Settings Sync (Microsoft/GitHub sign-in) as the source of truth for editor settings and extensions.
 

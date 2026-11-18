@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "theme": "auto",
+  "effortLevel": "medium",
+  "permissions": {
+    "allow": [
+      "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File *)",
+      "Bash(.venv/bin/python -m pip install *)",
+      "Bash(git fetch)",
+      "Bash(git fetch *)"
+    ]
+  }
+}
