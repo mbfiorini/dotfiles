@@ -60,6 +60,12 @@ fi
 if (( $+commands[code] )); then
   export VISUAL="code --wait --"
   export EDITOR="code"
+
+  # Claude Code appends its own args (e.g. `-g <file>`); the trailing `--`
+  # in VISUAL would turn them into filenames, so override it for claude only.
+  claude() {
+    VISUAL="code --wait" EDITOR="code --wait" command claude "$@"
+  }
 fi
 
 autoload -Uz edit-command-line
