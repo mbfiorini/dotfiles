@@ -4,11 +4,13 @@ source "$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)/common.sh"
 
 parse_mode "$@"
 
-LAZYGIT_VERSION="0.59.0"
-TARGET_BIN="/usr/local/bin/lazygit"
+LAZYGIT_VERSION="0.66.3"
+TARGET_BIN="${LAZYGIT_BIN:-$HOME/.local/bin/lazygit}"
 
 if [[ "$MODE" == "install" ]]; then
-  apt_install curl
+  if ! command -v curl >/dev/null 2>&1; then
+    apt_install curl
+  fi
 
   tmp_dir="$(mktemp -d)"
   archive="$tmp_dir/lazygit.tar.gz"
@@ -16,8 +18,8 @@ if [[ "$MODE" == "install" ]]; then
   curl -fsSL "https://github.com/jesseduffield/lazygit/releases/download/v${LAZYGIT_VERSION}/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz" -o "$archive"
   tar -C "$tmp_dir" -xf "$archive"
 
-  need_sudo
-  ${SUDO} install -m 0755 "$tmp_dir/lazygit" "$TARGET_BIN"
+  mkdir -p "$(dirname "$TARGET_BIN")"
+  install -m 0755 "$tmp_dir/lazygit" "$TARGET_BIN"
   rm -rf "$tmp_dir"
 
   stow_module lazygit
@@ -25,7 +27,6 @@ if [[ "$MODE" == "install" ]]; then
 else
   unstow_module lazygit
 
-  need_sudo
-  ${SUDO} rm -f "$TARGET_BIN"
+  rm -f "$TARGET_BIN"
   log "Removed lazygit and unstowed module"
 fi

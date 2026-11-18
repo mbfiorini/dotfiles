@@ -73,11 +73,12 @@ Run scripts in this exact order:
 5. `./scripts/zsh.sh`
 6. `./scripts/tmux.sh`
 7. `./scripts/node.sh`
-8. `./scripts/python.sh`
-9. `./scripts/dotnet.sh`
-10. `./scripts/lazygit.sh`
-11. `./scripts/powershell.sh`
-12. `./scripts/vscode.sh`
+8. `./scripts/diff-so-fancy.sh`
+9. `./scripts/python.sh`
+10. `./scripts/dotnet.sh`
+11. `./scripts/lazygit.sh`
+12. `./scripts/powershell.sh`
+13. `./scripts/vscode.sh`
 
 Or run all in order:
 
@@ -126,6 +127,7 @@ The following scripts stow/unstow user config automatically:
 - `zsh.sh` installs `zinit` and `zsh/.config/zsh/.zshrc` declares plugins/themes through the manager (no plugin git clones in installer scripts).
 - `dotnet.sh` installs SDKs 8.0 and 10.0 + global tools (`dotnet-ef`, `dotnet-format`) pinned to the versions detected.
 - `node.sh` installs nvm pinned to the detected commit and Node `22.22.0`.
+- `diff-so-fancy.sh` installs diff-so-fancy `1.4.14` with the user-local npm prefix; Git and Lazygit use it as their diff renderer.
 - `vscode` module currently tracks `~/.config/Code/User/mcp.json` only.
 - `vscode.sh` is intentionally minimal and does not install extensions; use VS Code Settings Sync (Microsoft/GitHub sign-in) as the source of truth for editor settings and extensions.
 

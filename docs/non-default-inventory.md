@@ -12,7 +12,7 @@ Host: Ubuntu 24.04.3 LTS on WSL2 (`systemd=true`)
 - python `3.12.3`
 - node `v22.22.0` (via nvm)
 - npm `10.9.4`
-- lazygit `0.59.0`
+- lazygit `0.66.3`
 - zoxide `0.9.3`
 - fzf `0.44.1`
 - bat `0.24.0`

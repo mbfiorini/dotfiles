@@ -34,9 +34,9 @@ if [[ -f "$ZINIT_HOME/zinit.zsh" ]]; then
 
   # Warn when Docker completion symlink is broken (common when Docker Desktop
   # on Windows host is stopped), but do not mutate system files/fpath.
-  if [[ -L /usr/share/zsh/vendor-completions/_docker ]] && [[ ! -e /usr/share/zsh/vendor-completions/_docker ]]; then
-    echo "[zsh] Warning: Docker vendor completions may be unavailable while Docker Desktop is stopped on the Windows host." >&2
-  fi
+  #if [[ -L /usr/share/zsh/vendor-completions/_docker ]] && [[ ! -e /usr/share/zsh/vendor-completions/_docker ]]; then
+  #  echo "[zsh] Warning: Docker vendor completions may be unavailable while Docker Desktop is stopped on the Windows host." >&2
+  #fi
 
   autoload -Uz compinit
   compinit -d "${XDG_CACHE_HOME:-$HOME/.cache}/zcompdump"

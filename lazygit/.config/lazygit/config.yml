@@ -1,2 +1,9 @@
 git:
   overrideGpg: true
+  fetchAll: false
+  diffRenderers:
+    - type: stdinFilter
+      name: diff-so-fancy
+      command: diff-so-fancy
+    - type: rawGit
+      name: default

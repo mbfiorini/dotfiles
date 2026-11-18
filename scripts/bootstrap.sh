@@ -24,6 +24,7 @@ ORDER=(
   zsh.sh
   tmux.sh
   node.sh
+  diff-so-fancy.sh
   python.sh
   dotnet.sh
   lazygit.sh
