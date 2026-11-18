@@ -1,0 +1,5 @@
+prefix_rule(pattern=["powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File"], decision="allow")
+prefix_rule(pattern=[".venv/bin/python", "-m", "pip", "install"], decision="allow")
+prefix_rule(pattern=["git", "fetch"], decision="allow")
+prefix_rule(pattern=["codex", "exec", "--help"], decision="allow")
+prefix_rule(pattern=["codex", "debug", "--help"], decision="allow")
